@@ -56,7 +56,7 @@ public class OrderDataMapper {
     }
 
     private StreetAddress orderAddressToStreetAddress(OrderAddress address) {
-        return new StreetAddress(UUID.randomUUID(), address.getStreet(), address.getPostCode(), address.getCity());
+        return new StreetAddress(UUID.randomUUID(), address.getStreet(), address.getPostalCode(), address.getCity());
     }
 
     public TrackOrderResponse orderToTrackOrderResponse(Order order) {

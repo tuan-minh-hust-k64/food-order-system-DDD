@@ -21,7 +21,7 @@ public class OrderController {
     public OrderController(OrderApplicationService orderApplicationService) {
         this.orderApplicationService = orderApplicationService;
     }
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<CreateOrderResponse> createOrder(@RequestBody CreateOrderCommand createOrderCommand) {
         log.info("create order for customer: {} in restaurant: {}", createOrderCommand.getCustomerId(), createOrderCommand.getRestaurantId());
         CreateOrderResponse createOrderResponse = orderApplicationService.createOrder(createOrderCommand);

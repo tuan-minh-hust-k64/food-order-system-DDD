@@ -32,9 +32,8 @@ public class OrderDataAccessMapper {
                 .failureMessages(order.getFailureMessages() != null? String.join(",", order.getFailureMessages()) : "")
                 .build();
         orderEntity.getAddress().setOrder(orderEntity);
-        orderEntity.getItems().stream().map(orderItemEntity -> {
+        orderEntity.getItems().forEach(orderItemEntity -> {
             orderItemEntity.setOrder(orderEntity);
-            return null;
         });
         return orderEntity;
     }
