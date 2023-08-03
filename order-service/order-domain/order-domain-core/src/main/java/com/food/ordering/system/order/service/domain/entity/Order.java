@@ -9,6 +9,7 @@ import com.food.ordering.system.valueobject.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Order extends AggregateRoot<OrderId> {
     private final CustomerId customerId;

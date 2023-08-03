@@ -15,6 +15,7 @@
         <module>common/common-application</module>
         <module>customer-service</module>
         <module>payment-service</module>
+        <module>restaurant-service</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -96,6 +97,16 @@
             <dependency>
                 <groupId>com.food.ordering.system</groupId>
                 <artifactId>payment-application-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering.system</groupId>
+                <artifactId>payment-dataaccess</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering.system</groupId>
+                <artifactId>payment-messaging</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

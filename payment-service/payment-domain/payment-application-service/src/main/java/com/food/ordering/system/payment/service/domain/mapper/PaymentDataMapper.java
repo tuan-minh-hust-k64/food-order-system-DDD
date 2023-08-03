@@ -2,7 +2,6 @@ package com.food.ordering.system.payment.service.domain.mapper;
 
 import com.food.ordering.system.payment.service.domain.dto.PaymentRequest;
 import com.food.ordering.system.payment.service.domain.entity.Payment;
-import com.food.ordering.system.payment.service.domain.valueobject.PaymentId;
 import com.food.ordering.system.valueobject.CustomerId;
 import com.food.ordering.system.valueobject.Money;
 import com.food.ordering.system.valueobject.OrderId;

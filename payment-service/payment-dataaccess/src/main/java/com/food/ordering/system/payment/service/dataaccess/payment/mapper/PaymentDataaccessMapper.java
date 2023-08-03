@@ -6,7 +6,6 @@ import com.food.ordering.system.payment.service.domain.valueobject.PaymentId;
 import com.food.ordering.system.valueobject.CustomerId;
 import com.food.ordering.system.valueobject.Money;
 import com.food.ordering.system.valueobject.OrderId;
-import com.food.ordering.system.valueobject.PaymentStatus;
 import org.springframework.stereotype.Component;
 
 @Component
