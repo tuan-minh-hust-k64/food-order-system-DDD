@@ -3,7 +3,7 @@ package com.food.ordering.system.order.service.messaging.listener.kafka;
 import com.food.ordering.system.kafka.consumer.KafkaConsumer;
 import com.food.ordering.system.kafka.order.avro.model.PaymentResponseAvroModel;
 import com.food.ordering.system.kafka.order.avro.model.PaymentStatus;
-import com.food.ordering.system.order.service.domain.ports.PaymentResponseMessageListenerImpl;
+import com.food.ordering.system.order.service.domain.PaymentResponseMessageListenerImpl;
 import com.food.ordering.system.order.service.messaging.mapper.OrderMessagingDataMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;

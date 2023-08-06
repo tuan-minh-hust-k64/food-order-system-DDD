@@ -11,6 +11,9 @@
 
     <artifactId>infrastructure</artifactId>
     <packaging>pom</packaging>
+    <modules>
+        <module>saga</module>
+    </modules>
     <properties>
     </properties>
 
