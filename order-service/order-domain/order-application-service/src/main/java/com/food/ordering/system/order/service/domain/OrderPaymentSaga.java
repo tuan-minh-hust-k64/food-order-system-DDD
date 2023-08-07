@@ -20,43 +20,32 @@ import java.util.UUID;
 @Component
 public class OrderPaymentSaga implements SagaStep<PaymentResponse, OrderPaidEvent, EmptyEvent> {
     private final OrderDomainService orderDomainService;
-    private final OrderRepository orderRepository;
     private final OrderPaidRestaurantRequestMessagePublisher orderPaidRestaurantRequestMessagePublisher;
+    private final OrderSagaHelp orderSagaHelp;
 
     public OrderPaymentSaga(OrderDomainService orderDomainService,
-                            OrderRepository orderRepository,
-                            OrderPaidRestaurantRequestMessagePublisher orderPaidRestaurantRequestMessagePublisher) {
+                            OrderPaidRestaurantRequestMessagePublisher orderPaidRestaurantRequestMessagePublisher, OrderSagaHelp orderSagaHelp) {
         this.orderDomainService = orderDomainService;
-        this.orderRepository = orderRepository;
         this.orderPaidRestaurantRequestMessagePublisher = orderPaidRestaurantRequestMessagePublisher;
+        this.orderSagaHelp = orderSagaHelp;
     }
 
     @Override
     @Transactional
     public OrderPaidEvent process(PaymentResponse data) {
         log.info("Complete payment for order with id: {}", data.getOrderId());
-        Order order = findOrder(data.getOrderId());
+        Order order = orderSagaHelp.findOrder(data.getOrderId());
         OrderPaidEvent orderPaidEvent = orderDomainService.payOrder(order, orderPaidRestaurantRequestMessagePublisher);
-        orderRepository.save(order);
+        orderSagaHelp.saveOrder(order);
         return orderPaidEvent;
     }
-
-    private Order findOrder(String orderId) {
-        Optional<Order> order = orderRepository.findById(new OrderId(UUID.fromString(orderId)));
-        if(order.isEmpty()) {
-            log.error("Order with id: {} not found", orderId);
-            throw new OrderNotFoundException("Not found order with id: " + orderId);
-        }
-        return order.get();
-    }
-
     @Override
     @Transactional
     public EmptyEvent rollback(PaymentResponse data) {
         log.info("Cancelling order with id: {}", data.getOrderId());
-        Order order = findOrder(data.getOrderId());
+        Order order = orderSagaHelp.findOrder(data.getOrderId());
         orderDomainService.cancelOrder(order, data.getFailureMessages());
-        orderRepository.save(order);
+        orderSagaHelp.saveOrder(order);
         log.info("Cancelled order with id: {}", data.getOrderId());
 
         return EmptyEvent.INSTANCE;
