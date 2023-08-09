@@ -19,10 +19,10 @@ public class OrderMessagingDataMapper {
     public PaymentRequestAvroModel orderCreateEventToPaymentRequestAvroModel(OrderCreateEvent orderCreateEvent) {
         Order order = orderCreateEvent.getOrder();
         return PaymentRequestAvroModel.newBuilder()
-                .setOrderId(order.getId().toString())
+                .setOrderId(order.getId().getValue().toString())
                 .setPaymentOrderStatus(PaymentOrderStatus.PENDING)
                 .setCreatedAt(orderCreateEvent.getCreatedAt().toInstant())
-                .setCustomerId(order.getCustomerId().toString())
+                .setCustomerId(order.getCustomerId().getValue().toString())
                 .setPrice(order.getPrice().getAmount())
                 .setSagaId("")
                 .setId(UUID.randomUUID().toString())
@@ -31,10 +31,10 @@ public class OrderMessagingDataMapper {
     public PaymentRequestAvroModel orderCancelledEventToPaymentRequestAvroModel(OrderCancelEvent orderCancelEvent) {
         Order order = orderCancelEvent.getOrder();
         return PaymentRequestAvroModel.newBuilder()
-                .setOrderId(order.getId().toString())
+                .setOrderId(order.getId().getValue().toString())
                 .setPaymentOrderStatus(PaymentOrderStatus.CANCELLED)
                 .setCreatedAt(orderCancelEvent.getCreatedAt().toInstant())
-                .setCustomerId(order.getCustomerId().toString())
+                .setCustomerId(order.getCustomerId().getValue().toString())
                 .setPrice(order.getPrice().getAmount())
                 .setSagaId("")
                 .setId(UUID.randomUUID().toString())
@@ -43,11 +43,11 @@ public class OrderMessagingDataMapper {
     public RestaurantApprovalRequestAvroModel orderPaidEventToRestaurantApprovalRequestAvroModel(OrderPaidEvent orderPaidEvent) {
         Order order = orderPaidEvent.getOrder();
         return RestaurantApprovalRequestAvroModel.newBuilder()
-                .setRestaurantId(order.getRestaurantId().toString())
+                .setRestaurantId(order.getRestaurantId().getValue().toString())
                 .setRestaurantOrderStatus(RestaurantOrderStatus.PAID)
                 .setCreatedAt(orderPaidEvent.getCreatedAt().toInstant())
                 .setId(UUID.randomUUID().toString())
-                .setOrderId(order.getId().toString())
+                .setOrderId(order.getId().getValue().toString())
                 .setPrice(order.getPrice().getAmount())
                 .setProducts(order.getItems().stream().map(orderItem -> {
                     return Product.newBuilder()

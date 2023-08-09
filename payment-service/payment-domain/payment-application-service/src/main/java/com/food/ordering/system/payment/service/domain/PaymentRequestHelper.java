@@ -53,7 +53,7 @@ public class PaymentRequestHelper {
     }
     @Transactional
     public PaymentEvent persistPayment(PaymentRequest paymentRequest) {
-        log.info("Receive payment complete event for orderId: {}", paymentRequest.getOrderId());
+        log.info("Receive payment complete event for orderId: {}, customerId: {}", paymentRequest.getOrderId(), paymentRequest.getCustomerId());
         Payment payment = paymentDataMapper.paymentRequestModelToPayment(paymentRequest);
         CreditEntry creditEntry = getCreditEntry(payment.getCustomerId());
         List<CreditHistory> creditHistories = getCreditEntryHistory(payment.getCustomerId());

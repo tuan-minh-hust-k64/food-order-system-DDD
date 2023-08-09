@@ -16,7 +16,7 @@ import java.util.UUID;
 public class PaymentMessagingDataMapper {
     public PaymentResponseAvroModel paymentCompleteToPaymentRequestAvroModel(PaymentCompletedEvent paymentCompletedEvent) {
         return PaymentResponseAvroModel.newBuilder()
-                .setPaymentId(paymentCompletedEvent.getPayment().getId().toString())
+                .setPaymentId(paymentCompletedEvent.getPayment().getId().getValue().toString())
                 .setCreatedAt(paymentCompletedEvent.getCreatedAt().toInstant())
                 .setCustomerId(paymentCompletedEvent.getPayment().getCustomerId().getValue().toString())
                 .setFailureMessages(paymentCompletedEvent.getFailureMessages())
@@ -29,7 +29,7 @@ public class PaymentMessagingDataMapper {
     }
     public PaymentResponseAvroModel paymentCancelledToPaymentRequestAvroModel(PaymentCancelledEvent paymentCancelledEvent) {
         return PaymentResponseAvroModel.newBuilder()
-                .setPaymentId(paymentCancelledEvent.getPayment().getId().toString())
+                .setPaymentId(paymentCancelledEvent.getPayment().getId().getValue().toString())
                 .setCreatedAt(paymentCancelledEvent.getCreatedAt().toInstant())
                 .setCustomerId(paymentCancelledEvent.getPayment().getCustomerId().getValue().toString())
                 .setFailureMessages(paymentCancelledEvent.getFailureMessages())
@@ -42,7 +42,7 @@ public class PaymentMessagingDataMapper {
     }
     public PaymentResponseAvroModel paymentFailedToPaymentRequestAvroModel(PaymentFailedEvent paymentFailedEvent) {
         return PaymentResponseAvroModel.newBuilder()
-                .setPaymentId(paymentFailedEvent.getPayment().getId().toString())
+                .setPaymentId(paymentFailedEvent.getPayment().getId().getValue().toString())
                 .setCreatedAt(paymentFailedEvent.getCreatedAt().toInstant())
                 .setCustomerId(paymentFailedEvent.getPayment().getCustomerId().getValue().toString())
                 .setFailureMessages(paymentFailedEvent.getFailureMessages())
