@@ -28,7 +28,7 @@ public class PayOrderKafkaMessagePublisher implements OrderPaidRestaurantRequest
 
     @Override
     public void publish(OrderPaidEvent domainEvent) {
-        String orderId = domainEvent.getOrder().getId().toString();
+        String orderId = domainEvent.getOrder().getId().getValue().toString();
         RestaurantApprovalRequestAvroModel restaurantApprovalRequestAvroModel = orderMessagingDataMapper.orderPaidEventToRestaurantApprovalRequestAvroModel(domainEvent);
         try {
             kafkaProducer.send(orderServiceConfigData.getRestaurantApprovalRequestTopicName(), orderId,

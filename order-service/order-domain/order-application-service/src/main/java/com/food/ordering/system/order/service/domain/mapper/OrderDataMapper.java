@@ -39,6 +39,7 @@ public class OrderDataMapper {
         return CreateOrderResponse.builder()
                 .orderStatus(order.getOrderStatus())
                 .orderTrackingId(order.getTrackingId().getValue())
+                .message("Create order success!")
                 .build();
     }
     private List<OrderItem> orderItemsToOrderItemEntities(List<com.food.ordering.system.order.service.domain.dto.create.OrderItem> items) {

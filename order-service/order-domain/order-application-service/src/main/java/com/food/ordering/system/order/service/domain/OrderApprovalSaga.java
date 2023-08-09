@@ -9,6 +9,7 @@ import com.food.ordering.system.order.service.domain.ports.output.repository.Ord
 import com.food.ordering.system.saga.SagaStep;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Slf4j
@@ -26,6 +27,7 @@ public class OrderApprovalSaga implements SagaStep<RestaurantApprovalResponse, E
     }
 
     @Override
+    @Transactional
     public EmptyEvent process(RestaurantApprovalResponse data) {
         log.info("Order approval success with id: {}", data.getOrderId());
         Order order = orderSagaHelp.findOrder(data.getOrderId());
