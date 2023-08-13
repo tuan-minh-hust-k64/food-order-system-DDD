@@ -10,9 +10,9 @@ import com.food.ordering.system.order.service.domain.event.OrderPaidEvent;
 import java.util.List;
 
 public interface OrderDomainService {
-    OrderCreateEvent validateAndInitOrder(Order order, Restaurant restaurant, DomainEventPublisher<OrderCreateEvent> orderCreateEventDomainEventPublisher);
-    OrderPaidEvent payOrder(Order order, DomainEventPublisher<OrderPaidEvent> orderPaidEventDomainEventPublisher);
+    OrderCreateEvent validateAndInitOrder(Order order, Restaurant restaurant);
+    OrderPaidEvent payOrder(Order order);
     void approveOrder(Order order);
-    OrderCancelEvent cancelOrderPayment(Order order, List<String> failureMessages, DomainEventPublisher<OrderCancelEvent> orderCancelEventDomainEventPublisher);
+    OrderCancelEvent cancelOrderPayment(Order order, List<String> failureMessages);
     void cancelOrder(Order order, List<String> failureMessages);
 }

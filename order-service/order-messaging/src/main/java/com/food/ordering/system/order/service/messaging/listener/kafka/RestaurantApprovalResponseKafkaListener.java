@@ -4,8 +4,10 @@ import com.food.ordering.system.kafka.consumer.KafkaConsumer;
 import com.food.ordering.system.kafka.order.avro.model.OrderApprovalStatus;
 import com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel;
 import com.food.ordering.system.order.service.domain.RestaurantResponseMessageListenerImpl;
+import com.food.ordering.system.order.service.domain.exception.OrderNotFoundException;
 import com.food.ordering.system.order.service.messaging.mapper.OrderMessagingDataMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -40,17 +42,26 @@ public class RestaurantApprovalResponseKafkaListener implements KafkaConsumer<Re
                     offsets.toString()
                 );
         message.forEach(restaurantApprovalResponseAvroModel -> {
-            if(restaurantApprovalResponseAvroModel.getOrderApprovalStatus() == OrderApprovalStatus.APPROVED) {
-                log.info("Processing approved for order id: {}", restaurantApprovalResponseAvroModel.getOrderId());
-                restaurantResponseMessageListener.orderApporoved(orderMessagingDataMapper
-                        .restaurantApprovalRequestAvroModelToRestaurantApprovalRequest(restaurantApprovalResponseAvroModel));
-            } else if(restaurantApprovalResponseAvroModel.getOrderApprovalStatus() == OrderApprovalStatus.REJECTED) {
-                log.info("Processing reject for order id: {}, with failure message: {}",
-                        restaurantApprovalResponseAvroModel.getOrderId(),
-                        String.join(",", restaurantApprovalResponseAvroModel.getFailureMessages())
-                );
-                restaurantResponseMessageListener.orderRejected(orderMessagingDataMapper
-                        .restaurantApprovalRequestAvroModelToRestaurantApprovalRequest((restaurantApprovalResponseAvroModel)));
+            try {
+                if(restaurantApprovalResponseAvroModel.getOrderApprovalStatus() == OrderApprovalStatus.APPROVED) {
+                    log.info("Processing approved for order id: {}", restaurantApprovalResponseAvroModel.getOrderId());
+                    restaurantResponseMessageListener.orderApporoved(orderMessagingDataMapper
+                            .restaurantApprovalRequestAvroModelToRestaurantApprovalRequest(restaurantApprovalResponseAvroModel));
+                } else if(restaurantApprovalResponseAvroModel.getOrderApprovalStatus() == OrderApprovalStatus.REJECTED) {
+                    log.info("Processing reject for order id: {}, with failure message: {}",
+                            restaurantApprovalResponseAvroModel.getOrderId(),
+                            String.join(",", restaurantApprovalResponseAvroModel.getFailureMessages())
+                    );
+                    restaurantResponseMessageListener.orderRejected(orderMessagingDataMapper
+                            .restaurantApprovalRequestAvroModelToRestaurantApprovalRequest((restaurantApprovalResponseAvroModel)));
+                }
+            } catch (OptimisticLockingFailureException e) {
+                //NO-OP for optimistic lock. This means another thread finished the work, do not throw error to prevent reading the data from kafka again!
+                log.error("Caught optimistic locking exception in PaymentResponseKafkaListener for order id: {}",
+                        restaurantApprovalResponseAvroModel.getOrderId());
+            } catch (OrderNotFoundException e) {
+                //NO-OP for OrderNotFoundException
+                log.error("No order found for order id: {}", restaurantApprovalResponseAvroModel.getOrderId());
             }
         });
     }

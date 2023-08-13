@@ -19,9 +19,8 @@ public class PaymentResponseMessageListenerImpl implements PaymentResponseMessag
 
     @Override
     public void paymentCompleted(PaymentResponse paymentResponse) {
-        OrderPaidEvent orderPaidEvent = orderPaymentSaga.process(paymentResponse);
+        orderPaymentSaga.process(paymentResponse);
         log.info("Payment complete for order with id: {}", paymentResponse.getOrderId());
-        orderPaidEvent.fire();
     }
 
     @Override

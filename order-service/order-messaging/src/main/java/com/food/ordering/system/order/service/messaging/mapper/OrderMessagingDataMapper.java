@@ -7,6 +7,8 @@ import com.food.ordering.system.order.service.domain.entity.Order;
 import com.food.ordering.system.order.service.domain.event.OrderCancelEvent;
 import com.food.ordering.system.order.service.domain.event.OrderCreateEvent;
 import com.food.ordering.system.order.service.domain.event.OrderPaidEvent;
+import com.food.ordering.system.order.service.domain.outbox.model.approval.OrderApprovalEventPayload;
+import com.food.ordering.system.order.service.domain.outbox.model.payment.OrderPaymentEventPayload;
 import com.food.ordering.system.valueobject.OrderApprovalStatus;
 import com.food.ordering.system.valueobject.PaymentStatus;
 import org.springframework.stereotype.Component;
@@ -82,6 +84,36 @@ public class OrderMessagingDataMapper {
                 .failureMessages(restaurantApprovalResponseAvroModel.getFailureMessages())
                 .id(restaurantApprovalResponseAvroModel.getId())
                 .sagaId(restaurantApprovalResponseAvroModel.getSagaId())
+                .build();
+    }
+
+    public PaymentRequestAvroModel orderPaymentEventPayloadToPaymentRequestAvroModel(OrderPaymentEventPayload orderPaymentEventPayload, String sagaId) {
+        return PaymentRequestAvroModel.newBuilder()
+                .setOrderId(orderPaymentEventPayload.getOrderId())
+                .setPaymentOrderStatus(PaymentOrderStatus.valueOf(orderPaymentEventPayload.getPaymentOrderStatus()))
+                .setCreatedAt(orderPaymentEventPayload.getCreatedAt().toInstant())
+                .setCustomerId(orderPaymentEventPayload.getCustomerId())
+                .setPrice(orderPaymentEventPayload.getPrice())
+                .setSagaId(sagaId)
+                .setId(UUID.randomUUID().toString())
+                .build();
+    }
+
+    public RestaurantApprovalRequestAvroModel orderApprovalEventPayloadToRestaurantApprovalRequestAvroModel(OrderApprovalEventPayload orderApprovalEventPayload, String sagaId) {
+        return RestaurantApprovalRequestAvroModel.newBuilder()
+                .setRestaurantId(orderApprovalEventPayload.getRestaurantId())
+                .setRestaurantOrderStatus(RestaurantOrderStatus.valueOf(orderApprovalEventPayload.getRestaurantOrderStatus()))
+                .setCreatedAt(orderApprovalEventPayload.getCreatedAt().toInstant())
+                .setId(UUID.randomUUID().toString())
+                .setOrderId(orderApprovalEventPayload.getOrderId())
+                .setPrice(orderApprovalEventPayload.getPrice())
+                .setProducts(orderApprovalEventPayload.getProducts().stream().map(orderItem -> {
+                    return Product.newBuilder()
+                            .setId(orderItem.getId())
+                            .setQuantity(orderItem.getQuantity())
+                            .build();
+                }).collect(Collectors.toList()))
+                .setSagaId(sagaId)
                 .build();
     }
 }
