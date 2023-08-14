@@ -18,18 +18,11 @@ public class PaymentRequestMessageListenerIml implements PaymentRequestMessageLi
     @Override
     public void completePayment(PaymentRequest paymentRequest) {
         PaymentEvent paymentEvent = paymentRequestHelper.persistPayment(paymentRequest);
-        fire(paymentEvent);
     }
 
     @Override
     public void cancelPayment(PaymentRequest paymentRequest) {
         PaymentEvent paymentEvent = paymentRequestHelper.persistCancelPayment(paymentRequest);
-        fire(paymentEvent);
     }
 
-    private void fire(PaymentEvent paymentEvent) {
-        log.info("Publish payment event with order id: {}, customer id: {]", paymentEvent.getPayment().getOrderId().getValue(),
-                paymentEvent.getPayment().getCustomerId().getValue());
-        paymentEvent.fire();
-    }
 }

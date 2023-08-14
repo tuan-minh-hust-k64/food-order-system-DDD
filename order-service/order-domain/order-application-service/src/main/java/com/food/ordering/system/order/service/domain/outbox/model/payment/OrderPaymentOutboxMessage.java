@@ -9,10 +9,9 @@ import lombok.Getter;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
-
 @Getter
-@Builder
 @AllArgsConstructor
+@Builder
 public class OrderPaymentOutboxMessage {
     private UUID id;
     private UUID sagaId;
