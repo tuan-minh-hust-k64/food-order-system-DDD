@@ -17,12 +17,12 @@ public class PaymentRequestMessageListenerIml implements PaymentRequestMessageLi
 
     @Override
     public void completePayment(PaymentRequest paymentRequest) {
-        PaymentEvent paymentEvent = paymentRequestHelper.persistPayment(paymentRequest);
+        paymentRequestHelper.persistPayment(paymentRequest);
     }
 
     @Override
     public void cancelPayment(PaymentRequest paymentRequest) {
-        PaymentEvent paymentEvent = paymentRequestHelper.persistCancelPayment(paymentRequest);
+        paymentRequestHelper.persistCancelPayment(paymentRequest);
     }
 
 }

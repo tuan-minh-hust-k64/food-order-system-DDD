@@ -1,4 +1,4 @@
-package com.food.ordering.system.restaurant.service.domain.ports;
+package com.food.ordering.system.restaurant.service.domain;
 
 import com.food.ordering.system.event.publisher.DomainEventPublisher;
 import com.food.ordering.system.restaurant.service.domain.RestaurantDomainService;

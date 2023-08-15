@@ -1,4 +1,4 @@
-package com.food.ordering.system.restaurant.service.domain.ports;
+package com.food.ordering.system.restaurant.service.domain;
 
 import com.food.ordering.system.restaurant.service.domain.dto.RestaurantApprovalRequest;
 import com.food.ordering.system.restaurant.service.domain.event.OrderApprovalEvent;
@@ -18,6 +18,5 @@ public class RestaurantApprovalRequestListenerImpl implements RestaurantApproval
     @Override
     public void approveOrder(RestaurantApprovalRequest restaurantApprovalRequest) {
         OrderApprovalEvent orderApprovedEvent = restaurantApprovalRequestHelper.persistOrderApproval(restaurantApprovalRequest);
-        orderApprovedEvent.fire();
     }
 }

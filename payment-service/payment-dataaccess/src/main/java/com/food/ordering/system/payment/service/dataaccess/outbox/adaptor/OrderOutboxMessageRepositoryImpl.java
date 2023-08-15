@@ -53,6 +53,6 @@ public class OrderOutboxMessageRepositoryImpl implements OrderOutboxRepository {
 
     @Override
     public void deleteByTypeAndOutboxStatus(String type, OutboxStatus status) {
-
+        orderOutboxMessageJpaRepository.deleteByTypeAndOutboxStatus(type, status);
     }
 }
