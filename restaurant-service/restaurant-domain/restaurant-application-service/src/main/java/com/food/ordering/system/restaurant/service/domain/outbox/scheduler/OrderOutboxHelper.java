@@ -82,4 +82,14 @@ public class OrderOutboxHelper {
     public void deleteOrderOutboxMessageByOutboxStatus(OutboxStatus outboxStatus) {
         orderOutboxRepository.deleteByTypeAndOutboxStatus(ORDER_SAGA_NAME, outboxStatus);
     }
+
+    public Optional<OrderOutboxMessage> getOrderOutboxMessageBySagaIdAndOutboxStatus(UUID sagaId, OutboxStatus outboxStatus) {
+        log.info("Saga ID:{}", sagaId.toString());
+
+        return orderOutboxRepository.findByTypeAndSagaIdAndOutboxStatus(
+                ORDER_SAGA_NAME,
+                sagaId,
+                outboxStatus
+        );
+    }
 }
