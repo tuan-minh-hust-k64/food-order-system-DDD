@@ -13,9 +13,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "order_customer_m_view", schema = "customer")
+@Table(name = "customers")
 @Entity
 public class  CustomerEntity {
     @Id
     private UUID id;
+    private String username;
+    private String firstName;
+    private String lastName;
 }
