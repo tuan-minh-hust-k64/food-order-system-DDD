@@ -1,5 +1,6 @@
 package com.food.ordering.system.order.service.messaging.mapper;
 
+import com.food.ordering.system.event.payload.RestaurantOrderEventPayload;
 import com.food.ordering.system.kafka.order.avro.model.*;
 import com.food.ordering.system.order.service.domain.dto.message.CustomerModel;
 import com.food.ordering.system.order.service.domain.dto.message.PaymentResponse;
@@ -8,9 +9,9 @@ import com.food.ordering.system.order.service.domain.entity.Order;
 import com.food.ordering.system.order.service.domain.event.OrderCancelEvent;
 import com.food.ordering.system.order.service.domain.event.OrderCreateEvent;
 import com.food.ordering.system.order.service.domain.event.OrderPaidEvent;
-import com.food.ordering.system.order.service.domain.outbox.model.approval.OrderApprovalEventPayload;
-import com.food.ordering.system.order.service.domain.outbox.model.payment.OrderPaymentEventPayload;
-import com.food.ordering.system.order.service.domain.outbox.model.payment.PaymentOrderEventPayload;
+import com.food.ordering.system.event.payload.OrderApprovalEventPayload;
+import com.food.ordering.system.event.payload.OrderPaymentEventPayload;
+import com.food.ordering.system.event.payload.PaymentOrderEventPayload;
 import com.food.ordering.system.valueobject.OrderApprovalStatus;
 import com.food.ordering.system.valueobject.PaymentStatus;
 import debezium.payment.order_outbox.Value;
@@ -81,13 +82,16 @@ public class OrderMessagingDataMapper {
                 .build();
     }
 
-    public RestaurantApprovalResponse restaurantApprovalRequestAvroModelToRestaurantApprovalRequest(RestaurantApprovalResponseAvroModel restaurantApprovalResponseAvroModel) {
+    public RestaurantApprovalResponse restaurantApprovalRequestAvroModelToRestaurantApprovalRequest(
+            RestaurantOrderEventPayload restaurantOrderEventPayload,
+            debezium.restaurant.order_outbox.Value restaurantApprovalResponseAvroModel
+    ) {
         return RestaurantApprovalResponse.builder()
-                .restaurantId(restaurantApprovalResponseAvroModel.getRestaurantId())
-                .orderApprovalStatus(OrderApprovalStatus.valueOf(restaurantApprovalResponseAvroModel.getOrderApprovalStatus().name()))
-                .orderId(restaurantApprovalResponseAvroModel.getOrderId())
-                .createdAt(restaurantApprovalResponseAvroModel.getCreatedAt())
-                .failureMessages(restaurantApprovalResponseAvroModel.getFailureMessages())
+                .restaurantId(restaurantOrderEventPayload.getRestaurantId())
+                .orderApprovalStatus(OrderApprovalStatus.valueOf(restaurantOrderEventPayload.getOrderApprovalStatus()))
+                .orderId(restaurantOrderEventPayload.getOrderId())
+                .createdAt(Instant.parse(restaurantApprovalResponseAvroModel.getCreatedAt()))
+                .failureMessages(restaurantOrderEventPayload.getFailureMessages())
                 .id(restaurantApprovalResponseAvroModel.getId())
                 .sagaId(restaurantApprovalResponseAvroModel.getSagaId())
                 .build();
