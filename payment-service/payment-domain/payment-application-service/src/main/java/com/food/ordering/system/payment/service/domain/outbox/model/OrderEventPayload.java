@@ -34,7 +34,7 @@ public class OrderEventPayload {
     private ZonedDateTime createdAt;
 
     @JsonProperty
-    private String paymentStatus;
+    private String paymentOrderStatus;
 
     @JsonProperty
     private List<String> failureMessages;

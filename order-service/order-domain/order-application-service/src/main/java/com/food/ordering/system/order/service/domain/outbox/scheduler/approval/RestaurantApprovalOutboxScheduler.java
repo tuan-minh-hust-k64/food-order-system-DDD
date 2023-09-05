@@ -27,27 +27,27 @@ public class RestaurantApprovalOutboxScheduler implements OutboxScheduler {
     }
 
     @Override
-    @Scheduled(fixedDelayString = "${order-service.outbox-scheduler-fixed-rate}",
-            initialDelayString = "${order-service.outbox-scheduler-initial-delay}")
-    @Transactional
+//    @Scheduled(fixedDelayString = "${order-service.outbox-scheduler-fixed-rate}",
+//            initialDelayString = "${order-service.outbox-scheduler-initial-delay}")
+//    @Transactional
     public void processOutboxMessage() {
-        Optional<List<OrderApprovalOutboxMessage>> outboxMessages = restaurantApprovalOutboxHelp.getOrderApprovalOutboxMessageByOutboxStatusAndSagaStatus(
-                OutboxStatus.STARTED,
-                SagaStatus.PROCESSING
-        );
-        if (outboxMessages.isPresent() && outboxMessages.get().size() > 0) {
-            List<OrderApprovalOutboxMessage> outboxMessageList = outboxMessages.get();
-            log.info("Receive {} OrderPaymentOutbox with ids: {}, sending to message bus!",
-                    outboxMessageList.size(),
-                    outboxMessageList.stream().map(outboxMessage -> {
-                        return outboxMessage.getId().toString();
-                    }).collect(Collectors.joining(", "))
-            );
-            outboxMessageList.forEach(item -> {
-                restaurantApprovalRequestMessagePublisher.publish(item, this::updateOutboxStatus);
-                log.info("{} OrderPaymentOutboxMessage is sent to message bus", outboxMessageList.size());
-            });
-        }
+//        Optional<List<OrderApprovalOutboxMessage>> outboxMessages = restaurantApprovalOutboxHelp.getOrderApprovalOutboxMessageByOutboxStatusAndSagaStatus(
+//                OutboxStatus.STARTED,
+//                SagaStatus.PROCESSING
+//        );
+//        if (outboxMessages.isPresent() && outboxMessages.get().size() > 0) {
+//            List<OrderApprovalOutboxMessage> outboxMessageList = outboxMessages.get();
+//            log.info("Receive {} OrderPaymentOutbox with ids: {}, sending to message bus!",
+//                    outboxMessageList.size(),
+//                    outboxMessageList.stream().map(outboxMessage -> {
+//                        return outboxMessage.getId().toString();
+//                    }).collect(Collectors.joining(", "))
+//            );
+//            outboxMessageList.forEach(item -> {
+//                restaurantApprovalRequestMessagePublisher.publish(item, this::updateOutboxStatus);
+//                log.info("{} OrderPaymentOutboxMessage is sent to message bus", outboxMessageList.size());
+//            });
+//        }
     }
 
     private void updateOutboxStatus(OrderApprovalOutboxMessage orderApprovalOutboxMessage, OutboxStatus outboxStatus) {

@@ -28,18 +28,18 @@ public class OrderOutboxScheduler implements OutboxScheduler {
     }
 
     @Override
-    @Scheduled(
-            fixedRateString = "${restaurant-service.outbox-scheduler-fixed-rate}",
-            initialDelayString = "${restaurant-service.outbox-scheduler-initial-delay}"
-    )
-    @Transactional
+//    @Scheduled(
+//            fixedRateString = "${restaurant-service.outbox-scheduler-fixed-rate}",
+//            initialDelayString = "${restaurant-service.outbox-scheduler-initial-delay}"
+//    )
+//    @Transactional
     public void processOutboxMessage() {
-        Optional<List<OrderOutboxMessage>> orderOutboxMessageListOptional = orderOutboxHelper.getOrderOutboxMessageByOutboxStatus(OutboxStatus.STARTED);
-        if(orderOutboxMessageListOptional.isPresent() && orderOutboxMessageListOptional.get().size() > 0) {
-            List<OrderOutboxMessage> orderOutboxMessagesList = orderOutboxMessageListOptional.get();
-            orderOutboxMessagesList.forEach(orderOutboxMessage -> {
-                restaurantApprovalResponseMessagePublisher.publish(orderOutboxMessage, orderOutboxHelper::updateOutboxMessage);
-            });
-        }
+//        Optional<List<OrderOutboxMessage>> orderOutboxMessageListOptional = orderOutboxHelper.getOrderOutboxMessageByOutboxStatus(OutboxStatus.STARTED);
+//        if(orderOutboxMessageListOptional.isPresent() && orderOutboxMessageListOptional.get().size() > 0) {
+//            List<OrderOutboxMessage> orderOutboxMessagesList = orderOutboxMessageListOptional.get();
+//            orderOutboxMessagesList.forEach(orderOutboxMessage -> {
+//                restaurantApprovalResponseMessagePublisher.publish(orderOutboxMessage, orderOutboxHelper::updateOutboxMessage);
+//            });
+//        }
     }
 }

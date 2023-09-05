@@ -31,15 +31,15 @@ public class OrderOutboxScheduler implements OutboxScheduler {
 //            initialDelayString = "${payment-service.outbox-scheduler-initial-delay}"
 //    )
     public void processOutboxMessage() {
-        Optional<List<OrderOutboxMessage>> orderOutboxMessagesOptional = orderOutboxHelper.getOrderOutboxMessageByOutboxStatus(
-                OutboxStatus.STARTED
-        );
-        if(orderOutboxMessagesOptional.isPresent() && orderOutboxMessagesOptional.get().size() > 0) {
-            List<OrderOutboxMessage> orderOutboxMessages = orderOutboxMessagesOptional.get();
-            orderOutboxMessages.forEach(orderOutboxMessage -> {
-                paymentResponseMessagePublisher.publish(orderOutboxMessage, orderOutboxHelper::updateOutboxMessage);
-            });
-            log.info("{} OrderOutboxMessage sent to message bus!", orderOutboxMessages.size());
-        }
+//        Optional<List<OrderOutboxMessage>> orderOutboxMessagesOptional = orderOutboxHelper.getOrderOutboxMessageByOutboxStatus(
+//                OutboxStatus.STARTED
+//        );
+//        if(orderOutboxMessagesOptional.isPresent() && orderOutboxMessagesOptional.get().size() > 0) {
+//            List<OrderOutboxMessage> orderOutboxMessages = orderOutboxMessagesOptional.get();
+//            orderOutboxMessages.forEach(orderOutboxMessage -> {
+//                paymentResponseMessagePublisher.publish(orderOutboxMessage, orderOutboxHelper::updateOutboxMessage);
+//            });
+//            log.info("{} OrderOutboxMessage sent to message bus!", orderOutboxMessages.size());
+//        }
     }
 }
