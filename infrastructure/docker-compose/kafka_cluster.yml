@@ -69,7 +69,7 @@ services:
     networks:
       - ${GLOBAL_NETWORK:-kafka}
   kafka-debezium-connector:
-    image: debezium/connect:${DEBEZIUM_VERSION}
+    image: debezium-custom:latest
     ports:
       - 8083:8083
     environment:
@@ -89,8 +89,8 @@ services:
       - kafka-broker-2
       - kafka-broker-3
       - schema-registry
-    volumes:
-      - "./debezium:/kafka/connect/debezium-connector-schemaregistry-7.2.5"
+#    volumes:
+#      - "./debezium:/kafka/connect/debezium-connector-schemaregistry-7.2.5"
     networks:
       - ${GLOBAL_NETWORK:-kafka}
   kafka-ui:
